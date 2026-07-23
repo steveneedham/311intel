@@ -1,0 +1,437 @@
+<!doctype html><html dir="auto"><head><meta http-equiv="Content-Security-Policy" content="default-src 'unsafe-inline' 'unsafe-eval' https: data: blob:; connect-src 'none'; form-action 'none'; base-uri 'none'">
+<script id="__base44_dark_class__">document.documentElement.classList.remove('dark');</script>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Wix+Madefor+Text:wght@400;500;600;700&display=swap">
+<style id="__base44_editor_theme__">
+:root {
+  --background: 38 27% 94%;
+  --foreground: 0 0% 4%;
+  --card: 0 0% 100%;
+  --card-foreground: 0 0% 4%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 0 0% 4%;
+  --primary: 21 42% 55%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 0 0% 96%;
+  --secondary-foreground: 0 0% 9%;
+  --muted: 39 17% 93%;
+  --muted-foreground: 0 0% 45%;
+  --accent: 0 0% 96%;
+  --accent-foreground: 0 0% 9%;
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 0 0% 98%;
+  --input: 0 0% 98%;
+  --ring: 21 42% 55%;
+  --radius: 0.5rem;
+  color-scheme: light;
+}
+.dark {
+  --background: 220 5% 11%;
+  --foreground: 0 0% 99%;
+  --card: 0 1% 14%;
+  --card-foreground: 0 0% 99%;
+  --popover: 0 1% 14%;
+  --popover-foreground: 0 0% 99%;
+  --primary: 21 42% 55%;
+  --primary-foreground: 0 0% 99%;
+  --secondary: 0 0% 18%;
+  --secondary-foreground: 0 0% 99%;
+  --muted: 0 0% 18%;
+  --muted-foreground: 0 0% 65%;
+  --accent: 0 0% 18%;
+  --accent-foreground: 0 0% 99%;
+  --destructive: 0 62% 30%;
+  --destructive-foreground: 0 0% 99%;
+  --border: 0 0% 16%;
+  --input: 0 0% 16%;
+  --ring: 21 42% 55%;
+  color-scheme: dark;
+}
+*, *::before, *::after { box-sizing: border-box; }
+/* shadcn's base layer: default every element's border-color to the theme
+   token. Without this, Tailwind's bare `border` utility only sets width and
+   the color falls back to currentColor (near-black text) — so the model's
+   `border` cards render heavy/dark and the `--border` value is ignored.
+   Explicit `border-{color}` utilities and inline styles still override. */
+*, *::before, *::after { border-color: hsl(var(--border)); }
+html, body {
+  margin: 0 !important;
+  padding: 0;
+  overflow: auto !important;
+  /* Inline card: transparent, so the real chat surface (a gradient, not the
+     single flat `--background` stop) shows straight through and the artifact
+     reads as inline chat content in both themes. Standalone saved file: opaque
+     `--background` so it stays readable on its own page. `--card` stays
+     elevated for emphasis blocks (stat tiles, panels) so hierarchy reads. */
+  background: hsl(var(--background)) !important;
+  color: hsl(var(--foreground));
+  font-family: 'WixMadeforText', 'Wix Madefor Text', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+/* 8px (vs 16px) — minimal breathing room from the iframe edge so
+   tightly-composed dashboards don't ship a fat empty halo at the top
+   before their first element. LLMs add their own inner spacing. */
+body { padding: 8px; }
+code, kbd, pre, samp { font-family: 'WixMadeforMonospace', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+a { color: hsl(var(--primary)); }
+hr { border: 0; border-top: 1px solid hsl(var(--border)); }
+h1, h2, h3, h4, h5, h6 { font-weight: 600; color: hsl(var(--foreground)); }
+</style>
+<script id="__base44_tw_config__">
+window.tailwind = window.tailwind || {};
+window.tailwind.config = {
+  darkMode: 'class',
+  theme: {
+    extend: {
+      colors: {
+        border: 'hsl(var(--border))',
+        input: 'hsl(var(--input))',
+        ring: 'hsl(var(--ring))',
+        background: 'hsl(var(--background))',
+        foreground: 'hsl(var(--foreground))',
+        primary: { DEFAULT: 'hsl(var(--primary))', foreground: 'hsl(var(--primary-foreground))' },
+        secondary: { DEFAULT: 'hsl(var(--secondary))', foreground: 'hsl(var(--secondary-foreground))' },
+        destructive: { DEFAULT: 'hsl(var(--destructive))', foreground: 'hsl(var(--destructive-foreground))' },
+        muted: { DEFAULT: 'hsl(var(--muted))', foreground: 'hsl(var(--muted-foreground))' },
+        accent: { DEFAULT: 'hsl(var(--accent))', foreground: 'hsl(var(--accent-foreground))' },
+        popover: { DEFAULT: 'hsl(var(--popover))', foreground: 'hsl(var(--popover-foreground))' },
+        card: { DEFAULT: 'hsl(var(--card))', foreground: 'hsl(var(--card-foreground))' },
+      },
+      // A bare `border` / `divide-*` (no color) falls back to Tailwind
+      // preflight's DEFAULT, which is a FIXED gray-200 (#e5e7eb) — subtle on the
+      // light card but near-white glare on the dark card. The `colors.border`
+      // map above only creates the `border-border` class; it does NOT set the
+      // uncolored default. Point the DEFAULT at the theme token so an uncolored
+      // border adapts to dark mode like the rest of the palette. (Explicit
+      // `border-primary` etc. still override.)
+      borderColor: { DEFAULT: 'hsl(var(--border))' },
+      divideColor: { DEFAULT: 'hsl(var(--border))' },
+      borderRadius: {
+        lg: 'var(--radius)',
+        md: 'calc(var(--radius) - 2px)',
+        sm: 'calc(var(--radius) - 4px)',
+      },
+      fontFamily: {
+        // Same two-name stack as `FONT_SANS_STACK` above. The
+        // sandboxed null-origin iframe lands on `Wix Madefor Text`
+        // (Google Fonts' name); `WixMadeforText` is here only for
+        // defense-in-depth in case the iframe ever runs same-origin.
+        sans: ['WixMadeforText', 'Wix Madefor Text', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'],
+        mono: ['WixMadeforMonospace', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace'],
+      },
+    },
+  },
+};
+</script>
+<script src="https://cdn.tailwindcss.com" id="__base44_tw_cdn__"></script></head><body><!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Columbus 311 Micromobility Hotspot Dashboard</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: inherit; padding: 20px; }
+
+  .header { margin-bottom: 20px; }
+  .header h1 { font-size: 1.1rem; font-weight: 700; color: hsl(var(--foreground)); }
+  .header p { font-size: 0.75rem; color: hsl(var(--muted-foreground)); margin-top: 3px; }
+
+  .stat-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 18px; }
+  .stat-card {
+    border-radius: 8px; border: 1px solid hsl(var(--border));
+    background: hsl(var(--card)); color: hsl(var(--card-foreground));
+    padding: 14px 16px;
+  }
+  .stat-label { font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: hsl(var(--muted-foreground)); }
+  .stat-value { font-size: 1.6rem; font-weight: 700; margin-top: 4px; color: hsl(var(--foreground)); }
+  .stat-sub { font-size: 0.7rem; color: hsl(var(--muted-foreground)); margin-top: 2px; }
+
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+
+  .panel {
+    border-radius: 8px; border: 1px solid hsl(var(--border));
+    background: hsl(var(--card)); padding: 16px;
+  }
+  .panel-title { font-size: 0.75rem; font-weight: 600; color: hsl(var(--foreground)); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.04em; }
+
+  .zone-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .zone-name { font-size: 0.72rem; color: hsl(var(--foreground)); width: 130px; flex-shrink: 0; }
+  .bar-wrap { flex: 1; height: 14px; background: hsl(var(--muted)); border-radius: 3px; overflow: hidden; position: relative; }
+  .bar-segment { height: 100%; display: inline-block; }
+  .zone-total { font-size: 0.7rem; color: hsl(var(--muted-foreground)); width: 28px; text-align: right; flex-shrink: 0; }
+
+  .legend { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 14px; }
+  .legend-item { display: flex; align-items: center; gap: 5px; font-size: 0.68rem; color: hsl(var(--muted-foreground)); }
+  .legend-dot { width: 9px; height: 9px; border-radius: 2px; flex-shrink: 0; }
+
+  .spike-callout {
+    background: hsl(var(--muted)); border-radius: 6px;
+    padding: 10px 14px; margin-bottom: 14px;
+    border-left: 3px solid hsl(var(--primary));
+    font-size: 0.73rem; color: hsl(var(--foreground)); line-height: 1.5;
+  }
+  .spike-callout strong { color: hsl(var(--foreground)); }
+
+  .tab-row { display: flex; gap: 6px; margin-bottom: 10px; }
+  .tab {
+    font-size: 0.68rem; font-weight: 600; padding: 4px 10px; border-radius: 4px;
+    cursor: pointer; border: 1px solid hsl(var(--border));
+    background: hsl(var(--muted)); color: hsl(var(--muted-foreground));
+    transition: all 0.15s;
+  }
+  .tab.active { background: hsl(var(--primary)); color: hsl(var(--primary-foreground)); border-color: hsl(var(--primary)); }
+
+  canvas { width: 100% !important; }
+
+  .insight-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .insight-chip {
+    border: 1px solid hsl(var(--border)); border-radius: 6px;
+    background: hsl(var(--card)); padding: 10px 12px;
+  }
+  .insight-chip .ic-label { font-size: 0.63rem; font-weight: 600; text-transform: uppercase; color: hsl(var(--muted-foreground)); letter-spacing: 0.04em; margin-bottom: 3px; }
+  .insight-chip .ic-value { font-size: 0.8rem; font-weight: 600; color: hsl(var(--foreground)); }
+  .insight-chip .ic-sub { font-size: 0.67rem; color: hsl(var(--muted-foreground)); margin-top: 2px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Columbus Veo &amp; Spin — 311 Hotspot Intelligence</h1>
+  <p>Apr 2024 – Oct 2025 · 1,339 complaints · Source: Columbus 311 CRM export</p>
+</div>
+
+<!-- STAT ROW -->
+<div class="stat-row">
+  <div class="stat-card">
+    <div class="stat-label">Total Complaints</div>
+    <div class="stat-value">1,339</div>
+    <div class="stat-sub">Apr 2024 – Oct 2025</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Dominant Zone</div>
+    <div class="stat-value" style="font-size:1.1rem; padding-top:5px;">Univ. District</div>
+    <div class="stat-sub">535 complaints · 40% of total</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Top Complaint Type</div>
+    <div class="stat-value" style="font-size:1.1rem; padding-top:5px;">ADA Ramp</div>
+    <div class="stat-sub">662 incidents · 49% of total</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Peak Month</div>
+    <div class="stat-value" style="font-size:1.2rem; padding-top:5px;">Mar 2025</div>
+    <div class="stat-sub">314 complaints · 4.5× avg</div>
+  </div>
+</div>
+
+<!-- SPIKE CALLOUT -->
+<div class="spike-callout">
+  ⚠️ <strong>March 2025 spike:</strong> 314 complaints — 4.5× the trailing monthly average (70). University District alone logged 165 that month (53% of the spike). Likely linked to spring semester return + OSU move-in weekend scooter deployment surge. Warrants enforcement patrol pre-positioning for Mar 2026.
+</div>
+
+<!-- ZONE STACKED BAR + COMPLAINT TYPE DONUT -->
+<div class="grid-2">
+  <div class="panel">
+    <div class="panel-title">Complaints by Zone &amp; Type</div>
+    <div class="legend">
+      <div class="legend-item"><div class="legend-dot" style="background:#6366f1"></div>ADA Ramp</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#a5b4fc"></div>Sidewalk Block</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#e2e8f0"></div>Abandoned</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#94a3b8"></div>Pile-up</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#cbd5e1"></div>Other</div>
+    </div>
+
+    <script>
+      const ZONES = [
+        { name: "Univ. District", total: 535, ada: 325, sidewalk: 158, abandoned: 24, pile: 19, other: 9 },
+        { name: "Downtown", total: 425, ada: 227, sidewalk: 161, abandoned: 20, pile: 9, other: 8 },
+        { name: "Clintonville", total: 96, ada: 44, sidewalk: 39, abandoned: 10, pile: 2, other: 1 },
+        { name: "Olde Town East", total: 38, ada: 15, sidewalk: 18, abandoned: 4, pile: 1, other: 0 },
+        { name: "Linden", total: 37, ada: 7, sidewalk: 17, abandoned: 10, pile: 0, other: 3 },
+        { name: "South Side", total: 35, ada: 7, sidewalk: 13, abandoned: 8, pile: 4, other: 3 },
+        { name: "Near East", total: 27, ada: 11, sidewalk: 11, abandoned: 2, pile: 2, other: 1 },
+        { name: "Upper Arlington", total: 26, ada: 10, sidewalk: 11, abandoned: 4, pile: 1, other: 0 },
+        { name: "Greater Hilltop", total: 20, ada: 3, sidewalk: 11, abandoned: 5, pile: 0, other: 1 },
+        { name: "OSU Campus", total: 14, ada: 11, sidewalk: 1, abandoned: 0, pile: 2, other: 0 },
+      ];
+      const maxTotal = 535;
+    </script>
+
+    <div id="zone-bars"></div>
+
+    <script>
+      const container = document.getElementById('zone-bars');
+      ZONES.forEach(z => {
+        const pct = v => ((v / maxTotal) * 100).toFixed(2) + '%';
+        container.innerHTML += `
+          <div class="zone-row">
+            <div class="zone-name" style="font-size:0.68rem">${z.name}</div>
+            <div class="bar-wrap">
+              <span class="bar-segment" style="width:${pct(z.ada)};background:#6366f1"></span>
+              <span class="bar-segment" style="width:${pct(z.sidewalk)};background:#a5b4fc"></span>
+              <span class="bar-segment" style="width:${pct(z.abandoned)};background:#e2e8f0"></span>
+              <span class="bar-segment" style="width:${pct(z.pile)};background:#94a3b8"></span>
+              <span class="bar-segment" style="width:${pct(z.other)};background:#cbd5e1"></span>
+            </div>
+            <div class="zone-total">${z.total}</div>
+          </div>`;
+      });
+    </script>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title">Complaint Type Distribution</div>
+    <canvas id="typeDonut" height="200"></canvas>
+  </div>
+</div>
+
+<!-- MONTHLY TREND -->
+<div class="panel" style="margin-bottom:14px;">
+  <div class="panel-title">Monthly Complaint Trend</div>
+  <div class="tab-row">
+    <div class="tab active" onclick="switchZone('all', this)">All Columbus</div>
+    <div class="tab" onclick="switchZone('ud', this)">Univ. District</div>
+    <div class="tab" onclick="switchZone('dt', this)">Downtown</div>
+  </div>
+  <canvas id="monthlyLine" height="120"></canvas>
+</div>
+
+<!-- OPERATOR + INSIGHTS -->
+<div class="grid-3">
+  <div class="panel">
+    <div class="panel-title">Operator Split — Top 2 Zones</div>
+    <canvas id="operatorBar" height="180"></canvas>
+  </div>
+
+  <div class="panel" style="grid-column: span 2;">
+    <div class="panel-title">Zone Intelligence Summary</div>
+    <div class="insight-grid">
+      <div class="insight-chip">
+        <div class="ic-label">University District</div>
+        <div class="ic-value">61% ADA Ramp incidents</div>
+        <div class="ic-sub">325 of 535 · Spin (81) slightly outnumbers Veo (51) · Peaks in spring semester (Mar–Apr)</div>
+      </div>
+      <div class="insight-chip">
+        <div class="ic-label">Downtown</div>
+        <div class="ic-value">53% ADA Ramp incidents</div>
+        <div class="ic-sub">227 of 425 · Veo (56) ≈ Spin (78) · No-ride zone violations only here · Nov spike (31)</div>
+      </div>
+      <div class="insight-chip">
+        <div class="ic-label">Clintonville</div>
+        <div class="ic-value">Veo-dominant zone</div>
+        <div class="ic-sub">24 Veo vs 6 Spin · 46% ADA ramp · Strong residential complaint pattern</div>
+      </div>
+      <div class="insight-chip">
+        <div class="ic-label">ADA Pattern — System-wide</div>
+        <div class="ic-value">49% of ALL complaints</div>
+        <div class="ic-sub">662 ADA ramp incidents across 18 months — highest legal risk category</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// === SHARED COLORS ===
+function getCSSVar(v) {
+  return getComputedStyle(document.body).getPropertyValue(v).trim();
+}
+const primary = `hsl(${getCSSVar('--primary')})`;
+const muted = `hsl(${getCSSVar('--muted-foreground')})`;
+const border = `hsl(${getCSSVar('--border')})`;
+
+// === DONUT ===
+new Chart(document.getElementById('typeDonut'), {
+  type: 'doughnut',
+  data: {
+    labels: ['ADA Ramp', 'Sidewalk Block', 'Abandoned', 'Pile-up', 'Business Entrance', 'No-Ride Zone'],
+    datasets: [{
+      data: [662, 488, 110, 47, 30, 2],
+      backgroundColor: ['#6366f1','#a5b4fc','#e2e8f0','#94a3b8','#cbd5e1','#475569'],
+      borderWidth: 0,
+      hoverBorderWidth: 0,
+    }]
+  },
+  options: {
+    cutout: '62%',
+    plugins: {
+      legend: {
+        position: 'bottom',
+        labels: { color: muted, font: { size: 10 }, boxWidth: 10, padding: 8 }
+      },
+      tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ${ctx.raw} (${((ctx.raw/1339)*100).toFixed(1)}%)` } }
+    }
+  }
+});
+
+// === MONTHLY LINE ===
+const months = ['Apr 24','May 24','Jun 24','Jul 24','Aug 24','Sep 24','Oct 24','Nov 24','Dec 24','Jan 25','Feb 25','Mar 25','Apr 25','May 25','Jun 25','Jul 25','Aug 25','Sep 25','Oct 25'];
+const dataAll = [65,132,16,12,21,22,30,49,21,10,8,314,124,90,95,85,81,75,89];
+const dataUD  = [34,66,7,2,1,8,8,9,6,2,4,165,57,35,36,31,21,20,23];
+const dataDT  = [11,47,3,3,11,4,15,31,13,6,3,83,51,35,38,18,20,17,16];
+
+const monthlyCtx = document.getElementById('monthlyLine');
+const monthlyChart = new Chart(monthlyCtx, {
+  type: 'bar',
+  data: {
+    labels: months,
+    datasets: [{
+      label: 'Complaints',
+      data: dataAll,
+      backgroundColor: primary,
+      borderWidth: 0,
+      hoverBackgroundColor: primary,
+      hoverBorderWidth: 0,
+      borderRadius: 3,
+    }]
+  },
+  options: {
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: ctx => ` ${ctx.raw} complaints` } }
+    },
+    scales: {
+      x: { ticks: { color: muted, font: { size: 9 } }, grid: { color: border } },
+      y: { ticks: { color: muted, font: { size: 9 } }, grid: { color: border } }
+    }
+  }
+});
+
+function switchZone(zone, el) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  const map = { all: dataAll, ud: dataUD, dt: dataDT };
+  monthlyChart.data.datasets[0].data = map[zone];
+  monthlyChart.update();
+}
+
+// === OPERATOR BAR ===
+new Chart(document.getElementById('operatorBar'), {
+  type: 'bar',
+  data: {
+    labels: ['Univ. District', 'Downtown', 'Clintonville', 'South Side', 'Near East'],
+    datasets: [
+      { label: 'Veo', data: [51, 56, 24, 4, 5], backgroundColor: '#6366f1', borderWidth: 0, hoverBackgroundColor: '#6366f1', hoverBorderWidth: 0, borderRadius: 3 },
+      { label: 'Spin', data: [81, 78, 6, 4, 6], backgroundColor: '#a5b4fc', borderWidth: 0, hoverBackgroundColor: '#a5b4fc', hoverBorderWidth: 0, borderRadius: 3 },
+    ]
+  },
+  options: {
+    plugins: {
+      legend: { labels: { color: muted, font: { size: 10 }, boxWidth: 10 } },
+      tooltip: {}
+    },
+    scales: {
+      x: { ticks: { color: muted, font: { size: 9 } }, grid: { display: false } },
+      y: { ticks: { color: muted, font: { size: 9 } }, grid: { color: border } }
+    }
+  }
+});
+</script>
+</body>
+</html>
+<script id="__base44_dark_class_post__">document.documentElement.classList.remove('dark');</script></body></html>
